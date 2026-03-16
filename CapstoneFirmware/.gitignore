@@ -1,0 +1,28 @@
+# Build artifacts
+Debug/
+Release/
+bin/
+obj/
+
+# STM32CubeIDE / Eclipse files
+.settings/
+.pio/
+.metadata/
+
+# Compiled files
+*.o
+*.d
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+
+# Temp / OS files
+*.tmp
+*.bak
+Thumbs.db
+.DS_Store
+
+# Static analysis
+.mxproject

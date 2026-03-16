@@ -1,0 +1,69 @@
+ 
+ 
+ 
+ 
+ 
+ MODE 1 - 12V 
+//-------------- Motor Controller ----------------- 
+ 
+// d-axis current loop  
+K_d = 1.183332233333333      // PI gain 
+T_d = 0.00113      // PI time constant 
+ 
+// q-axis current loop  
+K_q = 1.183332233333333      // PI gain 
+T_q = 0.00113      // PI time constant 
+ 
+PM_i = 75.89219715257339       // current loop phase margin, in deg. 
+ 
+// speed control loop  
+K_w = 0.2684668613243421      // PI gain 
+T_w = 0.007957753876221912      // PI time constant 
+ 
+PM_w = 67.38019196557295    // speed loop phase margin, in deg. 
+ 
+ 
+MODE 2 - 24V 
+//-------------- Motor Controller ----------------- 
+ 
+// d-axis current loop  
+K_d = 0.5916661166666666      // PI gain 
+T_d = 0.00113      // PI time constant 
+ 
+// q-axis current loop  
+K_q = 0.5916661166666666      // PI gain 
+T_q = 0.00113      // PI time constant 
+ 
+PM_i = 75.89219715257339       // current loop phase margin, in deg. 
+ 
+// speed control loop  
+K_w = 0.2684668613243421      // PI gain 
+T_w = 0.007957753876221912      // PI time constant 
+ 
+PM_w = 67.38019196557295    // speed loop phase margin, in deg. 
+ 
+ 
+ 
+ 
+ 
+ 
+ MODE 3 - 36V 
+//-------------- Motor Controller ----------------- 
+ 
+// d-axis current loop  
+K_d = 0.3944440777777777      // PI gain 
+T_d = 0.00113      // PI time constant 
+ 
+// q-axis current loop  
+K_q = 0.3944440777777777      // PI gain 
+T_q = 0.00113      // PI time constant 
+ 
+PM_i = 75.89219715257339       // current loop phase margin, in deg. 
+ 
+// speed control loop  
+K_w = 0.2684668613243421      // PI gain 
+T_w = 0.007957753876221912      // PI time constant 
+ 
+PM_w = 67.38019196557295    // speed loop phase margin, in deg. 
+ 
+ 
