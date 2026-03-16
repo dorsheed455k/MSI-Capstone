@@ -1,3 +1,16 @@
+/**
+ * main.c — STM32 Multi-Source Inverter (MSI) controller
+ *
+ * This MCU coordinates the whole MSI system:
+ * - Reads throttle (rotary encoder), current (AMC1302/ADC), and rotor angle (AS5047P).
+ * - Runs FOC (Field-Oriented Control) at 25 kHz to drive the inverter MOSFETs (TIM1 PWM).
+ * - Selects one of 3 MS modes (12V/24V/36V) via ms_switch (Q1/Q2/Q3) and updates FOC bus voltage.
+ * - Sends telemetry over BLE and prints status over USB CDC.
+ *
+ * High-level flow: main loop does slow tasks (LED, encoder read, prints, MS mode logic);
+ * ADC DMA completion runs the fast FOC loop (current → Park/Clarke → PI → SVM → PWM).
+ */
+
 #include "main.h"
 #include "adc.h"
 #include "dac.h"
