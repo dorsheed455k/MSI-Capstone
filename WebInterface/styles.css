@@ -46,15 +46,15 @@ header {
     margin-bottom: 40px;
 }
 
-h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    letter-spacing: -0.5px;
+.logo {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
-h1 span {
-    color: var(--primary);
-    font-weight: 300;
+.logo:hover {
+    transform: scale(1.05);
 }
 
 .status-indicator {
