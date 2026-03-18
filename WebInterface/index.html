@@ -14,7 +14,15 @@
     <div class="glass-container">
         <header>
             <div class="status-indicator" id="connectionStatus">Disconnected</div>
-            <img src="Images/Logo.png" alt="MSI Logo" class="logo">
+            <div class="logo-wrap">
+                <svg viewBox="0 0 280 40" class="logo-svg">
+                    <path d="M30 2 L52 13 L52 32 L30 43 L8 32 L8 13 Z" fill="none" stroke="var(--primary)" stroke-width="2.5" />
+                    <circle cx="30" cy="22.5" r="7" fill="var(--primary)" />
+                    <text x="65" y="32" font-family="'Outfit', sans-serif" font-weight="600" font-size="28" fill="white">
+                        MULTI<tspan fill="var(--primary)" font-weight="300">CORE</tspan>
+                    </text>
+                </svg>
+            </div>
             <button id="connectBtn" class="primary-btn">Connect via BLE</button>
         </header>
 

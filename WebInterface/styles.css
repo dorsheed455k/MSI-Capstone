@@ -46,12 +46,21 @@ header {
     margin-bottom: 40px;
 }
 
-.logo {
-    height: 60px;
-    width: auto;
-    object-fit: contain;
-    mix-blend-mode: screen;
+.logo-wrap {
+    height: 50px;
+    display: flex;
+    align-items: center;
     transition: transform 0.3s ease;
+}
+
+.logo-wrap:hover {
+    transform: scale(1.05);
+}
+
+.logo-svg {
+    height: 100%;
+    width: auto;
+    filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3));
 }
 
 .logo:hover {
