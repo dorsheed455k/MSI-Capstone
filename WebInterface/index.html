@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSI Telemetry Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="glass-container">
+        <header>
+            <div class="status-indicator" id="connectionStatus">Disconnected</div>
+            <h1>MSI Drive <span>Telemetry</span></h1>
+            <button id="connectBtn" class="primary-btn">Connect via BLE</button>
+        </header>
+
+        <main class="dashboard-grid">
+            <div class="card chart-card">
+                <h3>Phase Currents (A)</h3>
+                <div class="chart-container">
+                    <canvas id="currentChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card gauge-card">
+                <h3>Motor Speed</h3>
+                <div class="speed-display">
+                    <span id="speedValue">0</span>
+                    <span class="unit">RPM</span>
+                </div>
+                <div class="card-footer">
+                    <span class="label" id="modeLabel">VBUS Mode:</span>
+                    <span id="modeValue" class="mode-tag">OFF</span>
+                </div>
+            </div>
+
+            <div class="card data-grid">
+                <h3>Live Metrics</h3>
+                <div class="metric">
+                    <span class="label">Iu</span>
+                    <span id="iuValue" class="value">0.00</span>
+                </div>
+                <div class="metric">
+                    <span class="label">Iv</span>
+                    <span id="ivValue" class="value">0.00</span>
+                </div>
+                <div class="metric">
+                    <span class="label">Iw</span>
+                    <span id="iwValue" class="value">0.00</span>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
