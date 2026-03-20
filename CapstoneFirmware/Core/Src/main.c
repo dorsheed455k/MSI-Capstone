@@ -84,7 +84,7 @@ static volatile float v_req_mag =
     0.0f; // “required voltage magnitude” for MS logic
 
 static volatile uint8_t ms_desired_mode = MS_MODE_1_12V;
-static volatile uint8_t ms_mode3_variant = MS_MODE3_VAR_A;
+static volatile uint8_t ms_mode2_variant = MS_MODE2_VAR_A;
 
 static volatile float actual_rpm = 0.0f;
 static uint16_t last_angle14 = 0;
@@ -102,7 +102,7 @@ static inline float wrap_2pi(float a) {
 static FOC_t foc; // whatever your foc.h defines
 static float v_util = 0.0f;
 static MS_Mode_t desired_mode = MS_MODE_1_12V;
-static MS_Mode3Variant_t mode3var = MS_MODE3_VAR_A;
+static MS_Mode2Variant_t mode2var = MS_MODE2_VAR_A;
 
 volatile float g_iu = 0.0f;
 volatile float g_iv = 0.0f;

@@ -9,8 +9,8 @@ static float g_gain = 41.0f; // AMC1302 gain
 static float g_rshunt = 0.002f;
 
 // ADC + DMA buffer
-static ADC_HandleTypeDef *g_hadc = 0;
-static int16_t g_adc_buf[3];
+ADC_HandleTypeDef *g_hadc = 0;
+int16_t g_adc_buf[3];
 
 static inline float counts_to_vdiff(int16_t n) {
 
