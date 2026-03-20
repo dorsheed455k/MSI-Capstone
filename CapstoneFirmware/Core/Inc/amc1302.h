@@ -1,8 +1,9 @@
 #ifndef AMC1302_H
 #define AMC1302_H
 
-#include "main.h"
-#include <stdint.h>
+// current_sense.h
+#ifndef AMC1302_H
+#define AMC1302_H
 
 typedef struct {
   float iu, iv, iw;
