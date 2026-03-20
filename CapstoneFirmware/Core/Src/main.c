@@ -2,13 +2,17 @@
  * main.c — STM32 Multi-Source Inverter (MSI) controller
  *
  * This MCU coordinates the whole MSI system:
- * - Reads throttle (rotary encoder), current (AMC1302/ADC), and rotor angle (AS5047P).
- * - Runs FOC (Field-Oriented Control) at 25 kHz to drive the inverter MOSFETs (TIM1 PWM).
- * - Selects one of 3 MS modes (12V/24V/36V) via ms_switch (Q1/Q2/Q3) and updates FOC bus voltage.
+ * - Reads throttle (rotary encoder), current (AMC1302/ADC), and rotor angle
+ * (AS5047P).
+ * - Runs FOC (Field-Oriented Control) at 25 kHz to drive the inverter MOSFETs
+ * (TIM1 PWM).
+ * - Selects one of 3 MS modes (12V/24V/36V) via ms_switch (Q1/Q2/Q3) and
+ * updates FOC bus voltage.
  * - Sends telemetry over BLE and prints status over USB CDC.
  *
- * High-level flow: main loop does slow tasks (LED, encoder read, prints, MS mode logic);
- * ADC DMA completion runs the fast FOC loop (current → Park/Clarke → PI → SVM → PWM).
+ * High-level flow: main loop does slow tasks (LED, encoder read, prints, MS
+ * mode logic); ADC DMA completion runs the fast FOC loop (current → Park/Clarke
+ * → PI → SVM → PWM).
  */
 
 #include "main.h"
@@ -84,7 +88,7 @@ static volatile float v_req_mag =
     0.0f; // “required voltage magnitude” for MS logic
 
 static volatile uint8_t ms_desired_mode = MS_MODE_1_12V;
-static volatile uint8_t ms_mode3_variant = MS_MODE3_VAR_A;
+static volatile uint8_t ms_mode2_variant = MS_MODE2_VAR_A;
 
 static volatile float actual_rpm = 0.0f;
 static uint16_t last_angle14 = 0;
@@ -102,7 +106,7 @@ static inline float wrap_2pi(float a) {
 static FOC_t foc; // whatever your foc.h defines
 static float v_util = 0.0f;
 static MS_Mode_t desired_mode = MS_MODE_1_12V;
-static MS_Mode3Variant_t mode3var = MS_MODE3_VAR_A;
+static MS_Mode2Variant_t mode2var = MS_MODE2_VAR_A;
 
 volatile float g_iu = 0.0f;
 volatile float g_iv = 0.0f;
@@ -148,7 +152,7 @@ int main(void) {
 
   // MS Switching MOSFETS Initiation
   MS_Init(&ms);
-  MS_SetMode(&ms, MS_MODE_1_12V, MS_MODE3_VAR_A);
+  MS_SetMode(&ms, MS_MODE_1_12V, MS_MODE2_VAR_A);
 
   // FOC Initiation
   FOC_Init(&foc);
@@ -401,7 +405,7 @@ static void MS_UpdateSlow(void) {
   if (iabs < 2.0f) // tune threshold
   {
     if (ms.active_mode != desired_mode) {
-      MS_SetMode(&ms, desired_mode, mode3var);
+      MS_SetMode(&ms, desired_mode, mode2var);
 
       FOC_SetVdc(&foc, MS_ModeToVbus(desired_mode));
       FOC_ApplyMSModePI(&foc, (uint8_t)desired_mode);

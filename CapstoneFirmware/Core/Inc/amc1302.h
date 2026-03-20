@@ -1,9 +1,8 @@
-#include "stm32g4xx_hal.h"
-#include <stdint.h>
-
-// current_sense.h
 #ifndef AMC1302_H
 #define AMC1302_H
+
+#include "main.h"
+#include <stdint.h>
 
 typedef struct {
   float iu, iv, iw;
@@ -20,4 +19,4 @@ void CurrentSense_CalibrateOffsets(CurrentSense_t *cs, uint32_t samples);
 void CurrentSense_SetParams(float vref, uint16_t adc_bits, float amc_gain,
                             float rshunt);
 
-#endif
+#endif /* AMC1302_H */

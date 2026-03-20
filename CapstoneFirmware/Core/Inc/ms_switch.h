@@ -16,12 +16,12 @@ typedef enum
     MS_MODE_3_36V = 3
 } MS_Mode_t;
 
-/* Variant for Mode 3 (24V) */
+/* Variant for Mode 2 (24V) */
 typedef enum
 {
-    MS_MODE3_VAR_A = 0,  // Q1=1 Q2=0 Q3=0
-    MS_MODE3_VAR_B = 1   // Q1=0 Q2=1 Q3=1
-} MS_Mode3Variant_t;
+    MS_MODE2_VAR_A = 0,  // Q1=1 Q2=0 Q3=0
+    MS_MODE2_VAR_B = 1   // Q1=0 Q2=1 Q3=1
+} MS_Mode2Variant_t;
 
 typedef struct
 {
@@ -34,7 +34,11 @@ typedef struct
 
     uint32_t deadtime_ms;     // break-before-make delay
     MS_Mode_t active_mode;
-    MS_Mode3Variant_t mode3_variant;
+    MS_Mode2Variant_t mode2_variant;
+
+    /* Request/Pending logic */
+    MS_Mode_t target_mode;
+    uint8_t   shift_pending;
 } MS_Switch_t;
 
 /* Initialize pins + default off */
@@ -47,10 +51,16 @@ void MS_AllOff(MS_Switch_t *ms);
 void MS_SetRaw(MS_Switch_t *ms, uint8_t q1, uint8_t q2, uint8_t q3);
 
 /* Apply an operating mode (with safe break-before-make) */
-void MS_SetMode(MS_Switch_t *ms, MS_Mode_t mode, MS_Mode3Variant_t var3);
+void MS_SetMode(MS_Switch_t *ms, MS_Mode_t mode, MS_Mode2Variant_t var2);
 
 /* Optional helper: returns target bus voltage for a mode */
 float MS_ModeToVbus(MS_Mode_t mode);
+
+/* Request/safety API */
+void    MS_RequestMode(MS_Switch_t *ms, MS_Mode_t mode);
+uint8_t MS_SafetyTask(MS_Switch_t *ms, float current_rpm);
+void    MS_ApplyPending(MS_Switch_t *ms);
+uint8_t MS_IsShiftPending(const MS_Switch_t *ms);
 
 #ifdef __cplusplus
 }
