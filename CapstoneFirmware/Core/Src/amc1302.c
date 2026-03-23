@@ -74,3 +74,9 @@ void CurrentSense_CalibrateOffsets(CurrentSense_t *cs, uint32_t samples)
   cs->offset_v = sum_v / (float)samples;
   cs->offset_w = sum_w / (float)samples;
 }
+
+float CurrentSense_ConvertCountsToAmps(int16_t raw_count, float offset_volts)
+{
+  float vdiff = counts_to_vdiff(raw_count) - offset_volts;
+  return vdiff / (g_gain * g_rshunt);
+}
