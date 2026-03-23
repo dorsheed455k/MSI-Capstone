@@ -207,6 +207,7 @@ int main(void) {
     blink_Testing();
     hci_user_evt_proc();
     ble_Telemetry(&last_ble);
+    HAL_Delay(100); // Prevent USB saturation
     continue;
 #endif
 
