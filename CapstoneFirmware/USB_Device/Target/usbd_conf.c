@@ -95,7 +95,12 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
     HAL_NVIC_SetPriority(USB_LP_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(USB_LP_IRQn);
   /* USER CODE BEGIN USB_MspInit 1 */
-
+  /* PMA addresses must start after BTABLE (8 endpoints * 8 bytes = 0x40) */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x00 , PCD_SNG_BUF, 0x40);  /* EP0_OUT */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x80 , PCD_SNG_BUF, 0x80);  /* EP0_IN  */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x81 , PCD_SNG_BUF, 0xC0);  /* EP1_IN  */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x01 , PCD_SNG_BUF, 0x100); /* EP1_OUT */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x82 , PCD_SNG_BUF, 0x140); /* EP2_IN  */
   /* USER CODE END USB_MspInit 1 */
   }
 }

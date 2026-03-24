@@ -45,6 +45,8 @@ void ControllerVerification_Init(ControllerVerification_t *ctx) {
   ctx->completed = 0u;
   ctx->current_test = TEST_PWM;
   ctx->state_tick = HAL_GetTick();
+  
+  HAL_Delay(1000); // Wait for USB enumeration/terminal connection
   printf("[VERIFY] Controller verification mode started.\r\n");
 }
 

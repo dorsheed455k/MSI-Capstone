@@ -30,7 +30,7 @@ void BLE_Stack_Init(void)
 
 	 ret = aci_gap_init_IDB05A1(0x01,
 	                               0,
-	                               0x07,
+	                               20,
 	                               &service_handle,
 	                               &dev_name_handle,
 	                               &appearance_handle);

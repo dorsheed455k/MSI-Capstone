@@ -78,11 +78,17 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(EN_DT_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : BT_RESET_Pin BT_IRQ_Pin */
-  GPIO_InitStruct.Pin = BT_RESET_Pin|BT_IRQ_Pin;
+  /*Configure GPIO pin : BT_RESET_Pin */
+  GPIO_InitStruct.Pin = BT_RESET_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : BT_IRQ_Pin */
+  GPIO_InitStruct.Pin = BT_IRQ_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : MCU_U_DIS_Pin */
