@@ -22,6 +22,7 @@
 #include "tim.h"
 #include "usb_device.h"
 #include <math.h>
+#include <stdio.h>
 
 #include "amc1302.h"
 #include "as5047p.h"
@@ -85,17 +86,33 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_SPI3_Init(); 
+  
+  /* HEARTBEAT TEST: Blink 3 times quickly to show the brain is awake */
+  for (int i = 0; i < 6; i++) {
+    HAL_GPIO_TogglePin(MCU_LED_GPIO_Port, MCU_LED_Pin);
+    HAL_Delay(100);
+  }
+
+  MX_DMA_Init();
+  MX_ADC1_Init();
+  MX_DAC1_Init();
+  MX_SPI3_Init();
+  MX_SPI1_Init();
+  MX_TIM1_Init();
   CRS_USB_ClockSync_Init();
+  
+  /* Give the system a moment to stabilize clock and power before USB pull-up */
+  HAL_Delay(100);
+  
   MX_USB_Device_Init();
 
   /* USER CODE BEGIN 2 */
   /* STARTUP DELAY */
   HAL_Delay(1000);
 
-  /* BLE INITIALIZATION */
-  BlueNRG_M0_Init(&ble, &hspi3,
-                  GPIOA, GPIO_PIN_15, // CS (NSS)
+  /* BLE INITIALIZATION (Corrected to SPI1 per Report 3 / Schematic) */
+  BlueNRG_M0_Init(&ble, &hspi1,
+                  GPIOA, GPIO_PIN_4, // CS (NSS) is PA4
                   BT_IRQ_GPIO_Port, BT_IRQ_Pin,
                   BT_RESET_GPIO_Port, BT_RESET_Pin);
 
@@ -156,6 +173,10 @@ int main(void)
       telemetry.mode = 1; // 12V Mode
 
       BLE_SendTelemetry(&telemetry);
+
+      /* Serial (USB) Telemetry */
+      printf("IU:%.2f, IV:%.2f, IW:%.2f, RPM:%.1f, MODE:%d\r\n", 
+             telemetry.iu, telemetry.iv, telemetry.iw, telemetry.speed_rpm, telemetry.mode);
     }
     /* USER CODE END WHILE */
 
