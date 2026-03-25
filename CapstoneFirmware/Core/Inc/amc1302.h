@@ -1,9 +1,8 @@
 #ifndef AMC1302_H
 #define AMC1302_H
 
-// current_sense.h
-#ifndef AMC1302_H
-#define AMC1302_H
+#include "adc.h"
+#include <stdint.h>
 
 typedef struct {
   float iu, iv, iw;
@@ -19,5 +18,8 @@ void CurrentSense_CalibrateOffsets(CurrentSense_t *cs, uint32_t samples);
 /* Set these to your hardware */
 void CurrentSense_SetParams(float vref, uint16_t adc_bits, float amc_gain,
                             float rshunt);
+
+/* Software-only conversion helper for verification tests. */
+float CurrentSense_ConvertCountsToAmps(int16_t raw_count, float offset_volts);
 
 #endif /* AMC1302_H */

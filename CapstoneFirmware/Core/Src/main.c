@@ -26,6 +26,7 @@
 #include "as5047p.h"
 #include "ble_telemetry.h"
 #include "bluenrg_m0.h"
+#include "controller_verification.h"
 #include "foc.h"
 #include "ms_switch.h"
 
@@ -71,7 +72,12 @@ static MS_Switch_t ms;
 #define TS (1.0f / PWM_FREQ_HZ)
 #define TWO_PI 6.283185307f
 #define DT_FAST (1.0f / PWM_FREQ_HZ)
-#define TWO_PI 6.283185307f
+#define THROTTLE_MIN_COUNT 0
+#define THROTTLE_MAX_COUNT 200
+#define THROTTLE_MAX_RPM 3000.0f
+
+/* Set to 1 to run verification tests separately from runtime control loop. */
+#define MSI_RUN_CONTROLLER_VERIFICATION 1
 
 /* your motor */
 #define POLE_PAIRS 4 // <-- set correctly!
@@ -103,6 +109,7 @@ static FOC_t foc; // whatever your foc.h defines
 static float v_util = 0.0f;
 static MS_Mode_t desired_mode = MS_MODE_1_12V;
 static MS_Mode2Variant_t mode2var = MS_MODE2_VAR_A;
+static ControllerVerification_t verification;
 
 volatile float g_iu = 0.0f;
 volatile float g_iv = 0.0f;
@@ -148,7 +155,7 @@ int main(void) {
 
   // MS Switching MOSFETS Initiation
   MS_Init(&ms);
-  MS_SetMode(&ms, MS_MODE_1_12V, MS_MODE3_VAR_A);
+  MS_SetMode(&ms, MS_MODE_1_12V, MS_MODE2_VAR_A);
 
   // FOC Initiation
   FOC_Init(&foc);
@@ -178,6 +185,10 @@ int main(void) {
   AS5047P_Init(&encoder, &hspi3, GPIOA, GPIO_PIN_15); // CS = PA15
   encoder_initialized = 1;
 
+#if MSI_RUN_CONTROLLER_VERIFICATION
+  ControllerVerification_Init(&verification);
+#endif
+
   uint16_t angle = 0;
   uint16_t mag = 0;
   uint16_t err = 0;
@@ -185,12 +196,20 @@ int main(void) {
 
   static uint32_t last = 0;
   last_clk = read_clk();
-  extern volatile int32_t enc_count; // if declared elsewhere
 
   static uint32_t last_ms = 0;
   static uint32_t last_ble = 0;
 
   while (1) {
+#if MSI_RUN_CONTROLLER_VERIFICATION
+    ControllerVerification_RunStep(&verification, &htim1, &ms, &encoder,
+                                   enc_count, THROTTLE_MAX_RPM, actual_rpm);
+    blink_Testing();
+    hci_user_evt_proc();
+    ble_Telemetry(&last_ble);
+    continue;
+#endif
+
     blink_Testing();
     speed_Sense(angle, mag, err, ef);
     display_Current(&last);
@@ -270,7 +289,7 @@ void ble_Telemetry(uint32_t *last_ble) {
 
 void throttle_Display(void) {
   static uint32_t last_print = 0;
-  static int32_t min_cnt = 0, max_cnt = 200; // pick your range
+  static int32_t min_cnt = THROTTLE_MIN_COUNT, max_cnt = THROTTLE_MAX_COUNT;
 
   if (button_pressed) {
     button_pressed = 0;
@@ -293,9 +312,9 @@ void throttle_Display(void) {
 }
 
 static float throttle_to_rpm(int32_t c) {
-  const int32_t MIN_CNT = 0;
-  const int32_t MAX_CNT = 200;
-  const float MAX_RPM = 3000.0f; // set safe max
+  const int32_t MIN_CNT = THROTTLE_MIN_COUNT;
+  const int32_t MAX_CNT = THROTTLE_MAX_COUNT;
+  const float MAX_RPM = THROTTLE_MAX_RPM;
 
   if (c < MIN_CNT)
     c = MIN_CNT;
@@ -401,7 +420,7 @@ static void MS_UpdateSlow(void) {
   if (iabs < 2.0f) // tune threshold
   {
     if (ms.active_mode != desired_mode) {
-      MS_SetMode(&ms, desired_mode, mode3var);
+      MS_SetMode(&ms, desired_mode, mode2var);
 
       FOC_SetVdc(&foc, MS_ModeToVbus(desired_mode));
       FOC_ApplyMSModePI(&foc, (uint8_t)desired_mode);
@@ -508,7 +527,9 @@ static void CRS_USB_ClockSync_Init(void) {
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   if (hadc->Instance == ADC1) {
     CurrentSense_OnDmaComplete(&cs);
+#if !MSI_RUN_CONTROLLER_VERIFICATION
     Control_Fast_25kHz();
+#endif
 
     g_iu = cs.iu;
     g_iv = cs.iv;
