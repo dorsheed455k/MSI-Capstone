@@ -202,8 +202,8 @@ int main(void) {
 
   while (1) {
 #if MSI_RUN_CONTROLLER_VERIFICATION
-    ControllerVerification_RunStep(&verification, &htim1, &ms, &foc, &encoder,
-                                   enc_count, THROTTLE_MAX_RPM);
+    ControllerVerification_RunStep(&verification, &htim1, &ms, &encoder,
+                                   enc_count, THROTTLE_MAX_RPM, actual_rpm);
     blink_Testing();
     hci_user_evt_proc();
     ble_Telemetry(&last_ble);
@@ -527,7 +527,9 @@ static void CRS_USB_ClockSync_Init(void) {
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   if (hadc->Instance == ADC1) {
     CurrentSense_OnDmaComplete(&cs);
+#if !MSI_RUN_CONTROLLER_VERIFICATION
     Control_Fast_25kHz();
+#endif
 
     g_iu = cs.iu;
     g_iv = cs.iv;
