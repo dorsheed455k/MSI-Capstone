@@ -1,0 +1,80 @@
+﻿#include "ms_switch.h"
+
+extern SPI_HandleTypeDef hspi1;
+extern SPI_HandleTypeDef hspi3;
+
+AS5047P_Handle_t encoder;
+BlueNRG_M0_Handle_t ble;
+static CurrentSense_t cs;
+
+void SystemClock_Config(void);
+
+// Function initialization
+static void blink_Testing(void);
+static void speed_Sense(uint16_t angle, uint16_t mag, uint16_t err, bool ef);
+static void display_Current(uint32_t *last);
+static void throttle_Display(void);
+static void status_Display(void);
+static void MS_UpdateSlow(void);
+static float throttle_to_rpm(int32_t c);
+static void ble_Telemetry(uint32_t *last_ble);
+void hci_user_evt_proc(void); // only if needed
+static void Control_Fast_25kHz(void);
+static void CRS_USB_ClockSync_Init(void);
+static void speed_Control_Update(void);
+
+static inline uint8_t read_clk(void) {
+  return (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == GPIO_PIN_SET);
+}
+static inline uint8_t read_dt(void) {
+  return (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1) == GPIO_PIN_SET);
+}
+
+/* Rotary Encoder */
+volatile int32_t enc_count = 0;
+volatile uint8_t last_clk = 0;
+volatile uint8_t button_pressed = 0;
+
+static MS_Switch_t ms;
+
+/* constants */
+#define PWM_FREQ_HZ 25000.0f
+#define TS (1.0f / PWM_FREQ_HZ)
+#define TWO_PI 6.283185307f
+#define DT_FAST (1.0f / PWM_FREQ_HZ)
+#define THROTTLE_MIN_COUNT 0
+#define THROTTLE_MAX_COUNT 200
+#define THROTTLE_MAX_RPM 3000.0f
+
+/* Set to 1 to run verification tests separately from runtime control loop. */
+#define MSI_RUN_CONTROLLER_VERIFICATION 1
+
+/* your motor */
+#define POLE_PAIRS 4 // <-- set correctly!
+
+/* global state */
+static volatile float theta_e = 0.0f;  // electrical angle (rad)
+static volatile float rpm_cmd = 0.0f;  // from throttle (RPM)
+static volatile float vbus_est = 0.0f; // if measured; else set to mode value
+static volatile float v_req_mag =
+    0.0f; // ΓÇ£required voltage magnitudeΓÇ¥ for MS logic
+
+static volatile uint8_t ms_desired_mode = MS_MODE_1_12V;
+static volatile uint8_t ms_mode2_variant = MS_MODE2_VAR_A;
+
+static volatile float actual_rpm = 0.0f;
+static uint16_t last_angle14 = 0;
+static uint8_t encoder_initialized = 0;
+static float rpm_error = 0.0f;
+
+static inline float wrap_2pi(float a) {
+  while (a >= TWO_PI)
+    a -= TWO_PI;
+  while (a < 0.0f)
+    a += TWO_PI;
+  return a;
+}
+
+static FOC_t foc; // whatever your foc.h defines
+static float v_util = 0.0f;
+static MS_Mode_t desired_mode = MS_MODE_1_12V;
