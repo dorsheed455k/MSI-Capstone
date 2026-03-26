@@ -109,6 +109,8 @@ void ControllerVerification_Init(ControllerVerification_t *ctx) {
   ctx->current_test = (selected_test == 0u) ? VERIFY_TEST_PWM : selected_test;
   ctx->test_phase = 0u;
   ctx->state_tick = HAL_GetTick();
+  
+  HAL_Delay(1000); // Wait for USB enumeration/terminal connection
   ctx->test_start_tick = HAL_GetTick();
   ctx->motor_iq_cmd = 0.0f;
   printf("[VERIFY] Controller verification mode started.\r\n");

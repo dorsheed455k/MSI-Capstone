@@ -1,5 +1,5 @@
 /**
- * main.c — STM32 Multi-Source Inverter (MSI) controller
+ * main.c ΓÇö STM32 Multi-Source Inverter (MSI) controller
  *
  * This MCU coordinates the whole MSI system:
  * - Reads throttle (rotary encoder), current (AMC1302/ADC), and rotor angle (AS5047P).
@@ -8,7 +8,7 @@
  * - Sends telemetry over BLE and prints status over USB CDC.
  *
  * High-level flow: main loop does slow tasks (LED, encoder read, prints, MS mode logic);
- * ADC DMA completion runs the fast FOC loop (current → Park/Clarke → PI → SVM → PWM).
+ * ADC DMA completion runs the fast FOC loop (current ΓåÆ Park/Clarke ΓåÆ PI ΓåÆ SVM ΓåÆ PWM).
  */
 
 #include "main.h"
@@ -87,7 +87,7 @@ static volatile float theta_e = 0.0f;  // electrical angle (rad)
 static volatile float rpm_cmd = 0.0f;  // from throttle (RPM)
 static volatile float vbus_est = 0.0f; // if measured; else set to mode value
 static volatile float v_req_mag =
-    0.0f; // “required voltage magnitude” for MS logic
+    0.0f; // ΓÇ£required voltage magnitudeΓÇ¥ for MS logic
 
 static volatile uint8_t ms_desired_mode = MS_MODE_1_12V;
 static volatile uint8_t ms_mode2_variant = MS_MODE2_VAR_A;
@@ -115,8 +115,10 @@ volatile float g_iu = 0.0f;
 volatile float g_iv = 0.0f;
 volatile float g_iw = 0.0f;
 
-uint16_t telemetry_service_handle;
 uint16_t telemetry_char_handle;
+
+static TelemetryPacket_t telemetry = {0};
+static uint32_t last_telemetry_tick = 0;
 
 typedef struct {
   float Kp;
@@ -138,13 +140,30 @@ int main(void) {
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+
+  /* STARTUP DIAGNOSTIC: Blink 5 times extremely fast to prove MCU is alive */
+  for (int i = 0; i < 10; i++) {
+    HAL_GPIO_TogglePin(MCU_LED_GPIO_Port, MCU_LED_Pin);
+    HAL_Delay(50);
+  }
+  
+  printf("\r\n[BOOT] MCU Clocks & GPIO Initialized\r\n");
+
   MX_DMA_Init();
+  printf("[BOOT] DMA Initialized\r\n");
+  
   MX_ADC1_Init();
+  printf("[BOOT] ADC1 Initialized\r\n");
+  
   MX_SPI1_Init();
+  printf("[BOOT] SPI1 Initialized\r\n");
+  
   MX_TIM1_Init();
   MX_TIM3_Init();
   MX_DAC1_Init();
   MX_SPI3_Init();
+  printf("[BOOT] Timers & SPI3 Initialized\r\n");
+  
   MX_USB_Device_Init();
   CRS_USB_ClockSync_Init();
 
@@ -152,6 +171,7 @@ int main(void) {
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+  printf("[BOOT] PWM Started\r\n");
 
   // MS Switching MOSFETS Initiation
   MS_Init(&ms);
@@ -161,33 +181,38 @@ int main(void) {
   FOC_Init(&foc);
   FOC_SetVdc(&foc, MS_ModeToVbus(MS_MODE_1_12V));
 
-  /* Initialize BLUENRG_M0  */
-  BlueNRG_M0_Init(&ble, &hspi1, GPIOA, GPIO_PIN_3, // CS
-                  GPIOC, GPIO_PIN_7,               // IRQ
-                  GPIOC, GPIO_PIN_6);              // RESET
+  /* BLE INITIALIZATION (Corrected to SPI1 per Report 3 / Schematic) */
+  /*BlueNRG_M0_Init(&ble, &hspi1, GPIOA, GPIO_PIN_4, // CS (NSS) is PA4
+                  BT_IRQ_GPIO_Port, BT_IRQ_Pin, BT_RESET_GPIO_Port,
+                  BT_RESET_Pin);
 
-  BlueNRG_M0_ResetPulse(&ble, 5, 20);
+  BlueNRG_M0_ResetPulse(&ble, 10, 100);
 
   BLE_Stack_Init();
   BLE_Telemetry_Init();
   BLE_StartAdvertising();
+  */
 
   /* Current Sense Initialization */
   CurrentSense_SetParams(3.3f, 12, 41.0f,
                          0.002f); // Vref, ADC bits, AMC gain, shunt
   CurrentSense_Init(&cs, &hadc1);
   CurrentSense_Start(&cs);
+  printf("[BOOT] Current Sense Started\r\n");
 
   /* IMPORTANT: run this with motor OFF / no current */
   CurrentSense_CalibrateOffsets(&cs, 200); // ~200 ms in your current code
+  printf("[BOOT] Current Sense Calibrated\r\n");
 
   /* Initializing AS5047P */
   AS5047P_Init(&encoder, &hspi3, GPIOA, GPIO_PIN_15); // CS = PA15
   encoder_initialized = 1;
+  printf("[BOOT] Position Sensor Initialized\r\n");
 
 #if MSI_RUN_CONTROLLER_VERIFICATION
   ControllerVerification_Init(&verification);
 #endif
+  printf("[BOOT] Reaching Main Loop...\r\n");
 
   uint16_t angle = 0;
   uint16_t mag = 0;
@@ -223,6 +248,26 @@ int main(void) {
 
     hci_user_evt_proc();
     ble_Telemetry(&last_ble);
+
+    /* PERIODIC TELEMETRY (10Hz) */
+    if (HAL_GetTick() - last_telemetry_tick > 100) {
+      last_telemetry_tick = HAL_GetTick();
+
+      /* Create dummy wave data for testing */
+      static float phase = 0;
+      phase += 0.2f;
+      telemetry.iu = sinf(phase) * 2.0f;
+      telemetry.iv = sinf(phase + 2.094f) * 2.0f; // 120 deg
+      telemetry.iw = sinf(phase + 4.188f) * 2.0f; // 240 deg
+      telemetry.speed_rpm = 1200.0f + (sinf(phase * 0.1f) * 200.0f);
+      telemetry.mode = ms.active_mode;
+
+      BLE_SendTelemetry(&telemetry);
+
+      /* Serial (USB) Telemetry */
+      printf("IU:%.2f, IV:%.2f, IW:%.2f, RPM:%.1f, MODE:%d\r\n", telemetry.iu,
+             telemetry.iv, telemetry.iw, telemetry.speed_rpm, telemetry.mode);
+    }
 
     rpm_cmd = throttle_to_rpm(enc_count);
 
@@ -266,7 +311,7 @@ void speed_Sense(uint16_t angle, uint16_t mag, uint16_t err, bool ef) {
 
 void display_Current(uint32_t *last) {
 
-  if (HAL_GetTick() - *last >= 100) // 100 ms → 10 Hz
+  if (HAL_GetTick() - *last >= 100) // 100 ms ΓåÆ 10 Hz
   {
     *last = HAL_GetTick();
     printf("IU=%.3f A  IV=%.3f A  IW=%.3f A\r\n", g_iu, g_iv, g_iw);
@@ -398,7 +443,7 @@ static inline void InverterPWM_SetDuty(float du, float dv, float dw) {
 
 static void MS_UpdateSlow(void) {
   static uint32_t last_change = 0;
-  const uint32_t dwell_ms = 200; // don’t change too often
+  const uint32_t dwell_ms = 200; // donΓÇÖt change too often
   const float up_th = 0.92f;     // tune
   const float down_th = 0.65f;   // tune
 

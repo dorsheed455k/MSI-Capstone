@@ -90,12 +90,29 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
 
     /* Peripheral clock enable */
     __HAL_RCC_USB_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    
+    /**USB GPIO Configuration
+    PA11     ------> USB_DM
+    PA12     ------> USB_DP
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
     /* Peripheral interrupt init */
     HAL_NVIC_SetPriority(USB_LP_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(USB_LP_IRQn);
   /* USER CODE BEGIN USB_MspInit 1 */
-
+  /* PMA addresses must start after BTABLE (8 endpoints * 8 bytes = 0x40) */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x00 , PCD_SNG_BUF, 0x40);  /* EP0_OUT */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x80 , PCD_SNG_BUF, 0x80);  /* EP0_IN  */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x81 , PCD_SNG_BUF, 0xC0);  /* EP1_IN  */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x01 , PCD_SNG_BUF, 0x100); /* EP1_OUT */
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pcdHandle , 0x82 , PCD_SNG_BUF, 0x140); /* EP2_IN  */
   /* USER CODE END USB_MspInit 1 */
   }
 }
@@ -445,8 +462,8 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
   /* USER CODE END EndPoint_Configuration */
   /* USER CODE BEGIN EndPoint_Configuration_CDC */
   HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pdev->pData , 0x81 , PCD_SNG_BUF, 0xC0);
-  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pdev->pData , 0x01 , PCD_SNG_BUF, 0x110);
-  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pdev->pData , 0x82 , PCD_SNG_BUF, 0x100);
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pdev->pData , 0x01 , PCD_SNG_BUF, 0x100);
+  HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pdev->pData , 0x82 , PCD_SNG_BUF, 0x140);
   /* USER CODE END EndPoint_Configuration_CDC */
   return USBD_OK;
 }

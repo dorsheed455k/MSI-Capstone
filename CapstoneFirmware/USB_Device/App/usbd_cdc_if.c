@@ -62,6 +62,8 @@
   */
 
 /* USER CODE BEGIN PRIVATE_DEFINES */
+/* Line Coding Structure: 115200bps, 1 stop bit, no parity, 8 data bits */
+static uint8_t LineCoding[7] = {0x00, 0xC2, 0x01, 0x00, 0x00, 0x00, 0x08};
 /* USER CODE END PRIVATE_DEFINES */
 
 /**
@@ -220,11 +222,23 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
   /* 6      | bDataBits  |   1   | Number Data bits (5, 6, 7, 8 or 16).          */
   /*******************************************************************************/
     case CDC_SET_LINE_CODING:
-
+      LineCoding[0] = pbuf[0];
+      LineCoding[1] = pbuf[1];
+      LineCoding[2] = pbuf[2];
+      LineCoding[3] = pbuf[3];
+      LineCoding[4] = pbuf[4];
+      LineCoding[5] = pbuf[5];
+      LineCoding[6] = pbuf[6];
     break;
 
     case CDC_GET_LINE_CODING:
-
+      pbuf[0] = LineCoding[0];
+      pbuf[1] = LineCoding[1];
+      pbuf[2] = LineCoding[2];
+      pbuf[3] = LineCoding[3];
+      pbuf[4] = LineCoding[4];
+      pbuf[5] = LineCoding[5];
+      pbuf[6] = LineCoding[6];
     break;
 
     case CDC_SET_CONTROL_LINE_STATE:

@@ -26,7 +26,7 @@
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.188571502" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.6 || Debug || true || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || STM32G491RETx || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32G4xx_HAL_Driver/Inc | ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32G4xx/Include | ../Drivers/CMSIS/Include | ../USB_Device/App | ../USB_Device/Target | ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc | ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc | ../BlueNRG-MS/Target | ../Middlewares/ST/BlueNRG-MS/utils ||  ||  || USE_HAL_DRIVER | STM32G491xx ||  || USB_Device | BlueNRG-MS | Drivers | Core/Startup | Middlewares | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32G491RETX_FLASH.ld} || true || NonSecure ||  || secure_nsclib.o ||  || None ||  ||  || " valueType="string"/>
 							<option id="com.st.stm32cube.ide.mcu.debug.option.cpuclock.1099124693" name="Cpu clock frequence" superClass="com.st.stm32cube.ide.mcu.debug.option.cpuclock" useByScannerDiscovery="false" value="84" valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform.1117009869" isAbstract="false" osList="all" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform"/>
-							<builder buildPath="${workspace_loc:/Documents}/Debug" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.2017464218" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>
+							<builder buildPath="${workspace_loc:/CapstoneFirmware}/Debug" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.2017464218" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.652866814" name="MCU/MPU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.1776218148" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.value.g3" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols.1048350582" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols" valueType="definedSymbols">
@@ -47,10 +47,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\hci\hci_tl_patterns\Template&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\includes&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\hci\hci_tl_patterns\Basic&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\hci\hci_tl_patterns\Basic\hci_tl.h&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\includes&quot;"/>
-									<listOptionValue builtIn="false" value="C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\includes\hci.h"/>
-									<listOptionValue builtIn="false" value="C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\includes\bluenrg_gap_aci.h"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32G4xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32G4xx/Include"/>
@@ -60,11 +57,7 @@
 									<listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Core/Inc"/>
 									<listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc"/>
 									<listOptionValue builtIn="false" value="../BlueNRG-MS/Target"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\includes\bluenrg_gatt_aci.h&quot;"/>
 									<listOptionValue builtIn="false" value="../Middlewares/ST/BlueNRG-MS/utils"/>
-								</option>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includefiles.591428070" name="Include files (-include)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includefiles" useByScannerDiscovery="false" valueType="includeFiles">
-									<listOptionValue builtIn="false" value="&quot;C:\Users\mahjo\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-BLE1\7.1.0\Middlewares\ST\BlueNRG-MS\includes\bluenrg_gatt_aci.h&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1548726425" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -129,7 +122,7 @@
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.1330445599" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.6 || Release || false || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || STM32G491RETx || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32G4xx_HAL_Driver/Inc | ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32G4xx/Include | ../Drivers/CMSIS/Include | ../USB_Device/App | ../USB_Device/Target | ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc | ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc | ../BlueNRG-MS/Target | ../Middlewares/ST/BlueNRG-MS/utils ||  ||  || USE_HAL_DRIVER | STM32G491xx ||  || USB_Device | BlueNRG-MS | Drivers | Core/Startup | Middlewares | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32G491RETX_FLASH.ld} || true || NonSecure ||  || secure_nsclib.o ||  || None ||  ||  || " valueType="string"/>
 							<option id="com.st.stm32cube.ide.mcu.debug.option.cpuclock.1515951536" name="Cpu clock frequence" superClass="com.st.stm32cube.ide.mcu.debug.option.cpuclock" useByScannerDiscovery="false" value="84" valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform.1670132032" isAbstract="false" osList="all" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform"/>
-							<builder buildPath="${workspace_loc:/Documents}/Release" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.247809301" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>
+							<builder buildPath="${workspace_loc:/CapstoneFirmware}/Release" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.247809301" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.275165545" name="MCU/MPU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.1892540397" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.value.g0" valueType="enumerated"/>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.717984545" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
@@ -195,15 +188,6 @@
 		<project id="Documents.null.1135017976" name="Documents"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1550250779;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1550250779.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.2037637210;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.433573218">
-			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.2117092916;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.2117092916.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.912070475;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1548726425">
-			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
@@ -213,4 +197,5 @@
 			<resource resourceType="PROJECT" workspacePath="/CapstoneFirmware"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="scannerConfiguration"/>
 </cproject>
