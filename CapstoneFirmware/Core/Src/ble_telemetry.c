@@ -5,6 +5,8 @@
 #include "bluenrg_gap_aci.h"
 #include "bluenrg_gatt_aci.h"
 #include <string.h>
+#include <stddef.h>
+#include <stdint.h>
 
 static uint16_t telemetry_service_handle;
 static uint16_t telemetry_char_handle;
@@ -25,6 +27,14 @@ void BLE_Stack_Init(void)
 	 uint8_t ret;
 	 uint16_t service_handle, dev_name_handle, appearance_handle;
 
+     /* 1. Register custom transport layer functions */
+     extern void BLE_Transport_Register(void);
+     BLE_Transport_Register();
+
+     /* 2. Initialize the HCI library and reset BlueNRG module */
+     hci_init(NULL, NULL);
+
+     /* 3. Continue with GATT/GAP initialization */
 	 ret = aci_gatt_init();
 	 (void)ret;
 
