@@ -16,7 +16,10 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 
 *Architecture diagram showing the relationship between sensors, MCU, and power stage.*
 
-![Hardware Setup Front](Images/Screenshot%202026-03-16%20171005.jpg) | ![Hardware Setup Back](Images/Screenshot%202026-03-16%20171101.jpg) |
+| Hardware Setup - Top View | Hardware Setup - Bottom View |
+|:---:|:---:|
+| ![Hardware Setup Front](Images/Screenshot%202026-03-16%20171005.jpg) | ![Hardware Setup Back](Images/Screenshot%202026-03-16%20171101.jpg) |
+
 ![Physical Hardware](https://github.com/dorsheed455k/MSI-Capstone/blob/main/Images/PXL_20260323_204846762.RAW-01.COVER.jpg)
 
 *Physical hardware integration showing the STM32G4 and Multi-Source Inverter stage.*
