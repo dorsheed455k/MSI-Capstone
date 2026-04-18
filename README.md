@@ -32,6 +32,11 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 - **Current Sensing**: AMC1302 Isolated Delta-Sigma Modulators (Integrated Shunt)
 - **Communication**: BlueNRG-M0 Bluetooth Module
 
+## 📹 Video Demo
+
+![Test](https://github.com/dorsheed455k/MSI-Capstone/blob/main/Videos/PXL_20260409_162355977 (1).mp4)
+
+
 ## 📂 Project Structure
 
 - `Core/Src/main.c`: Real-time task orchestration and main control loop.
