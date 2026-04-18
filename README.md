@@ -18,6 +18,10 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 
 *Architecture diagram showing the relationship between sensors, MCU, and power stage.*
 
+| Hardware Setup - Top View | Hardware Setup - Bottom View |
+|:---:|:---:|
+| ![Hardware Setup Front](Images/Screenshot%202026-03-16%20171005.jpg) | ![Hardware Setup Back](Images/Screenshot%202026-03-16%20171101.jpg) |
+
 | Assembled Board | In Enclosure |
 |:---:|:---:|
 | <img src="Images/PXL_20260323_204846762.RAW-01.COVER.jpg" height="400" alt="Assembled Board"> | <img src="Images/PXL_20260412_190822789.RAW-01.COVER.jpg" height="400" alt="In Enclosure"> |
