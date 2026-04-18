@@ -182,16 +182,17 @@ int main(void) {
   FOC_SetVdc(&foc, MS_ModeToVbus(MS_MODE_1_12V));
 
   /* BLE INITIALIZATION (Corrected to SPI1 per Report 3 / Schematic) */
-  /*BlueNRG_M0_Init(&ble, &hspi1, GPIOA, GPIO_PIN_4, // CS (NSS) is PA4
+  BlueNRG_M0_Init(&ble, &hspi1, GPIOA, GPIO_PIN_4, // CS (NSS) is PA4
                   BT_IRQ_GPIO_Port, BT_IRQ_Pin, BT_RESET_GPIO_Port,
                   BT_RESET_Pin);
 
+  /* Reset the module */
   BlueNRG_M0_ResetPulse(&ble, 10, 100);
 
   BLE_Stack_Init();
   BLE_Telemetry_Init();
   BLE_StartAdvertising();
-  */
+
 
   /* Current Sense Initialization */
   CurrentSense_SetParams(3.3f, 12, 41.0f,
@@ -601,6 +602,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   } else if (GPIO_Pin == GPIO_PIN_13) // SW on PC13
   {
     button_pressed = 1; // handle in main loop
+  } else if (GPIO_Pin == BT_IRQ_Pin) // BlueNRG data ready
+  {
+    hci_notify_asynch_evt(NULL);
   }
 }
 void Error_Handler(void) {

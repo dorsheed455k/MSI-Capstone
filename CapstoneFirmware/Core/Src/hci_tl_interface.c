@@ -2,6 +2,8 @@
 #include "bluenrg_m0.h"
 #include "main.h"
 #include "hci.h"
+#include "stm32g4xx_hal.h"
+#include <stdint.h>
 
 extern BlueNRG_M0_Handle_t ble;
 
@@ -25,15 +27,21 @@ static int32_t TL_BLE_Receive(uint8_t* pData, uint16_t len)
     uint8_t header_tx[5] = {0x0B, 0x00, 0x00, 0x00, 0x00};
     uint8_t header_rx[5];
     uint16_t read_len;
+    uint32_t tickstart;
 
-    if (HAL_GPIO_ReadPin(BT_IRQ_GPIO_Port, BT_IRQ_Pin) == GPIO_PIN_RESET) {
-        return 0;
-    }
-
-    /* Manually handle CS to keep it low for the whole transaction */
+    /* 1. Assert CS first (per BlueNRG SPI protocol) */
     HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_RESET);
 
-    /* 5-byte header exchange */
+    /* 2. Wait for IRQ HIGH (module ready) AFTER CS is asserted */
+    tickstart = HAL_GetTick();
+    while (HAL_GPIO_ReadPin(BT_IRQ_GPIO_Port, BT_IRQ_Pin) == GPIO_PIN_RESET) {
+        if ((HAL_GetTick() - tickstart) > 200) {
+            HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
+            return 0; /* No data available */
+        }
+    }
+
+    /* 3. Exchange 5-byte header */
     if (HAL_SPI_TransmitReceive(ble.hspi, header_tx, header_rx, 5, 100) != HAL_OK) {
         HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
         return -1;
@@ -43,12 +51,7 @@ static int32_t TL_BLE_Receive(uint8_t* pData, uint16_t len)
 
     if (read_len > 0) {
         if (read_len > len) read_len = len;
-        
-        /* Read data bytes */
-        if (HAL_SPI_Receive(ble.hspi, pData, read_len, 100) != HAL_OK) {
-            HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
-            return -1;
-        }
+        HAL_SPI_Receive(ble.hspi, pData, read_len, 100);
     }
 
     HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
@@ -57,10 +60,39 @@ static int32_t TL_BLE_Receive(uint8_t* pData, uint16_t len)
 
 static int32_t TL_BLE_Send(uint8_t* pData, uint16_t len)
 {
-    if (BlueNRG_M0_SpiWrite(&ble, pData, len) == BLUENRG_OK) {
-        return len;
+    uint8_t header_tx[5] = {0x0A, 0x00, 0x00, 0x00, 0x00};
+    uint8_t header_rx[5];
+    uint32_t tickstart = HAL_GetTick();
+
+    HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_RESET);
+
+    /* Wait for IRQ to go high (Module ready) */
+    while (HAL_GPIO_ReadPin(BT_IRQ_GPIO_Port, BT_IRQ_Pin) == GPIO_PIN_RESET) {
+        if ((HAL_GetTick() - tickstart) > 200) {
+            HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
+            return -1;
+        }
     }
-    return -1;
+
+    if (HAL_SPI_TransmitReceive(ble.hspi, header_tx, header_rx, 5, 100) != HAL_OK) {
+        HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
+        return -1;
+    }
+
+    uint16_t buf_size = header_rx[1] | (header_rx[2] << 8);
+    if (buf_size < len) {
+        /* Slave buffer too small to accept this payload right now */
+        HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
+        return -1;
+    }
+
+    if (HAL_SPI_Transmit(ble.hspi, pData, len, 100) != HAL_OK) {
+        HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
+        return -1;
+    }
+
+    HAL_GPIO_WritePin(ble.cs_port, ble.cs_pin, GPIO_PIN_SET);
+    return len;
 }
 
 static int32_t TL_BLE_GetTick(void)
