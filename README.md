@@ -21,6 +21,7 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 | Hardware Setup - Top View | Hardware Setup - Bottom View |
 |:---:|:---:|
 | ![Hardware Setup Front](Images/Screenshot%202026-03-16%20171005.jpg) | ![Hardware Setup Back](Images/Screenshot%202026-03-16%20171101.jpg) |
+
 *Hardware setup of the MultiCore Drive (Assembled PCB and Enclosure views).*
 
 
@@ -34,6 +35,7 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 | Assembled Board | In Enclosure |
 |:---:|:---:|
 | <img src="Images/PXL_20260323_204846762.RAW-01.COVER.jpg" height="400" alt="Assembled Board"> | <img src="Images/PXL_20260412_190822789.RAW-01.COVER.jpg" height="400" alt="In Enclosure"> |
+
 *Final Physical Prototype
 
 ## 🛠 Hardware Configuration
