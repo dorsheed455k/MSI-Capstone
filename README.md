@@ -68,9 +68,9 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 
 ## 👥 Team & Contributors
 
-- **Mahjo** (@dorsheed455k) - Project Lead / Firmware Development
-- **Badi Daoud** (@badidaoud) - Hardware Integration / Logic
-- **@Artichoke12** - Hardware & Enclosure Design
+- **Dorsheed Abdalla** (@dorsheed455k) - Project Lead / Hardware Designer
+- **Badi Daoud** (@badidaoud) - Firmware Development Lead
+- **Jack Flann** (@Artichoke12) - Circuit Design and Simulation Lead
 
 ---
 *Developed as part of the MSI Capstone Project.*
