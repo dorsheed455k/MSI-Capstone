@@ -34,8 +34,7 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 
 ## 📹 Video Demo
 
-![Test](https://github.com/dorsheed455k/MSI-Capstone/blob/main/Videos/PXL_20260409_162355977 (1).mp4)
-
+![Test](https://github.com/user-attachments/assets/8038ec60-b21c-4de6-8237-01dfd35394ad)
 
 ## 📂 Project Structure
 
