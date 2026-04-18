@@ -46,5 +46,11 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 3. Click the **Build** button (Hammer icon) or press `Ctrl + B`.
 4. Flash the device using an ST-LINK debugger.
 
+## 👥 Team & Contributors
+
+- **Mahjo** (@dorsheed455k) - Project Lead / Firmware Development
+- **Badi Daoud** (@badidaoud) - Hardware Integration / Logic
+- **@Artichoke12** - Hardware & Enclosure Design
+
 ---
 *Developed as part of the MSI Capstone Project.*
