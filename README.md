@@ -27,7 +27,7 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 
 | PSIM Speed Simulation | PDN Analyzer Simulation |
 |:---:|:---:|
-| ![PSIM](Images/Screenshot%2026-04-18%185659.jpg) | ![PDN](Images/Screenshot%2026-04-18%185821.jpg) |
+| ![PSIM](Images/Screenshot 2026-04-18 185659.jpg) | ![PDN](Images/Screenshot 2026-04-18 185821.jpg) |
 
 *Speed Controller Simulation in PSIM and Power Delivery Simulation using Altium Designer.*
 
