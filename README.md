@@ -22,7 +22,7 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 |:---:|:---:|
 | ![Hardware Setup Front](Images/Screenshot%202026-03-16%20171005.jpg) | ![Hardware Setup Back](Images/Screenshot%202026-03-16%20171101.jpg) |
 
-*Hardware setup of the MultiCore Drive (Assembled PCB and Enclosure views).*
+*Hardware setup of the MultiCore Drive.*
 
 
 | PSIM Simulation | PDN Simulation |
