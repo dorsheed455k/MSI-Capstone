@@ -18,11 +18,25 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 
 *Architecture diagram showing the relationship between sensors, MCU, and power stage.*
 
+| Hardware Setup - Top View | Hardware Setup - Bottom View |
+|:---:|:---:|
+| ![Hardware Setup Front](Images/Screenshot%202026-03-16%20171005.jpg) | ![Hardware Setup Back](Images/Screenshot%202026-03-16%20171101.jpg) |
+
+*Hardware setup of the MultiCore Drive.*
+
+
+| PSIM Simulation | PDN Simulation |
+|:---:|:---:|
+| <img width="1083" height="352" alt="Screenshot 2026-04-18 185659" src="https://github.com/user-attachments/assets/92226545-6c97-49f6-af17-a1147617fa48" /> | <img width="1120" height="816" alt="Screenshot 2026-04-18 185821" src="https://github.com/user-attachments/assets/ebca33f0-142e-4780-a9ac-3ac9efe4e0c4" /> |
+
+*Speed Controller Simulation in PSIM and Power Delivery Simulation using Altium Designer PDN tool.*
+
+
 | Assembled Board | In Enclosure |
 |:---:|:---:|
 | <img src="Images/PXL_20260323_204846762.RAW-01.COVER.jpg" height="400" alt="Assembled Board"> | <img src="Images/PXL_20260412_190822789.RAW-01.COVER.jpg" height="400" alt="In Enclosure"> |
 
-*Hardware setup of the MultiCore Drive (Assembled PCB and Enclosure views).*
+*Final Physical Prototype
 
 ## 🛠 Hardware Configuration
 
@@ -31,6 +45,12 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 - **Position Sensor**: AS5047P Magnetic Encoder (SPI)
 - **Current Sensing**: AMC1302 Isolated Delta-Sigma Modulators (Integrated Shunt)
 - **Communication**: BlueNRG-M0 Bluetooth Module
+
+## 📹 Video Demo
+
+<p align="center" width="100%">
+<video src="https://github.com/user-attachments/assets/8038ec60-b21c-4de6-8237-01dfd35394ad"width="80%" controls></video>
+</p>
 
 ## 📂 Project Structure
 
@@ -48,9 +68,9 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 
 ## 👥 Team & Contributors
 
-- **Mahjo** (@dorsheed455k) - Project Lead / Firmware Development
-- **Badi Daoud** (@badidaoud) - Hardware Integration / Logic
-- **@Artichoke12** - Hardware & Enclosure Design
+- **Dorsheed Abdalla** (@dorsheed455k) - Project Lead / Hardware Designer
+- **Badi Daoud** (@badidaoud) - Firmware Development Lead
+- **Jack Flann** (@Artichoke12) - Circuit Design and Simulation Lead
 
 ---
 *Developed as part of the MSI Capstone Project.*
