@@ -51,6 +51,7 @@ This repository contains the firmware for a high-performance **Multi-Source Inve
 <p align="center" width="100%">
 <video src="https://github.com/user-attachments/assets/8038ec60-b21c-4de6-8237-01dfd35394ad"width="80%" controls></video>
 </p>
+Link to full demo: https://www.youtube.com/watch?v=ovEgkLox1IM
 
 ## 📂 Project Structure
 
